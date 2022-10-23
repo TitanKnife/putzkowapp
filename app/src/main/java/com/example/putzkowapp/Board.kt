@@ -1,11 +1,22 @@
 package com.example.putzkowapp.util
 
+import android.content.Context
+import android.graphics.Color
 import android.widget.TextView
-import java.util.Collections
+import com.example.putzkowapp.Board2
+
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import com.example.putzkowapp.MainActivity
 
 class Board {
     companion object {
+        var datasaved : Boolean = false
         var bewohner = ArrayList<String>(6);
+        var d: Int = 0
 
         fun init(){
             bewohner.add("Richard")
@@ -16,14 +27,53 @@ class Board {
             bewohner.add("Maik")
         }
 
-
-        fun refresh(table: Array<TextView>, q: Int){
-
-
-            for(i in 0..5){
-                var index = (i+q) % 6
-                table[i].text = bewohner[index]
+        fun p_name(): String {
+            d++
+            if(d>5){
+                d=0
             }
+            return bewohner.get(d)
+        }
+
+        fun m_name(): String {
+            d--
+            if(d<0){
+                d=5
+            }
+            return bewohner.get(d)
+        }
+
+        fun textcolor(table: Array<TextView>, text2: String){
+            var save: Int = 0
+            for (v in 0..5){
+                if(table[v].text==text2){
+                    table[v].setTextColor(Color.parseColor("#8a2be2"))
+                    save = v
+                } else {
+                    table[v].setTextColor(Color.parseColor("#B1B1B1"))
+                }
+            }
+        }
+
+
+
+
+        fun refresh(table: Array<TextView>){
+            for(i in 0..5){
+                if(i<3){
+                    table[i].text = Board2.kitchen.get(i).name
+                } else {
+                    table[i].text = Board2.bathroom.get(i-3).name
+                }
+            }
+
+
+
+
+//            for(i in 0..5){
+//                var index = (i+q) % 6
+//                table[i].text = bewohner[index]
+//            }
         }
     }
 
