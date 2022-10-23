@@ -66,14 +66,6 @@ class Board {
                     table[i].text = Board2.bathroom.get(i-3).name
                 }
             }
-
-
-
-
-//            for(i in 0..5){
-//                var index = (i+q) % 6
-//                table[i].text = bewohner[index]
-//            }
         }
     }
 

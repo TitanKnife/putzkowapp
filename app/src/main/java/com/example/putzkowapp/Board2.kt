@@ -31,14 +31,14 @@ class Board2 {
 
         fun backswitch(){
 
-            if(bathroom.get(2).inder==true){
-                Collections.rotate(bathroom, 1)
-            }
-            kitchen.add(0, bathroom.get(2))
-            bathroom.removeAt(2)
-
             bathroom.add(0, kitchen.get(2))
             kitchen.removeAt(2)
+
+            if(bathroom.get(3).inder==true){
+                Collections.rotate(bathroom, 1)
+            }
+            kitchen.add(0, bathroom.get(3))
+            bathroom.removeAt(3)
 
         }
     }
