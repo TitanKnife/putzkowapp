@@ -17,6 +17,15 @@ class Board {
         var bewohner = ArrayList<String>(6);
         var d: Int = 0
 
+        fun reset(){
+            for(y in 0..2){
+                Board2.kitchen.removeAt(0)
+                Board2.bathroom.removeAt(0)
+            }
+            Board2.init()
+
+        }
+
         fun init(save: Int){
             if(save!=-1){
                 d = save

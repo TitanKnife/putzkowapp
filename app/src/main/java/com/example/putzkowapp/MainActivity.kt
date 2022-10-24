@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             text.setText(i.toString())
             Board2.switch()
             Board.refresh(table)
-            Board.textcolor(table, text2.text.toString())
+            saveData(Board.textcolor(table, text2.text.toString()))
         }
 
         val minus = findViewById<Button>(R.id.button_m)
@@ -53,18 +53,23 @@ class MainActivity : AppCompatActivity() {
             text.setText(i.toString())
             Board2.backswitch()
             Board.refresh(table)
-            Board.textcolor(table, text2.text.toString())
+            saveData(Board.textcolor(table, text2.text.toString()))
         }
 
         val mname = findViewById<Button>(R.id.button_m2)
         mname.setOnClickListener{
             text2.setText(Board.m_name())
-            saveData(Board.textcolor(table, text2.text.toString()))
+            //saveData(Board.textcolor(table, text2.text.toString()))
         }
         val pname = findViewById<Button>(R.id.button_p2)
         pname.setOnClickListener{
             text2.setText(Board.p_name())
-            saveData(Board.textcolor(table, text2.text.toString()))
+            //saveData(Board.textcolor(table, text2.text.toString()))
+        }
+        val reset = findViewById<Button>(R.id.reset)
+        reset.setOnClickListener{
+            Board.reset()
+            Board.refresh(table)
         }
     }
     fun saveData(id:Int){
