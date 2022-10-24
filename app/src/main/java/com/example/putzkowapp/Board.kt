@@ -1,4 +1,4 @@
-package com.example.putzkowapp.util
+package com.example.putzkowapp
 
 import android.content.Context
 import android.graphics.Color
@@ -14,11 +14,13 @@ import com.example.putzkowapp.MainActivity
 
 class Board {
     companion object {
-        var datasaved : Boolean = false
         var bewohner = ArrayList<String>(6);
         var d: Int = 0
 
-        fun init(){
+        fun init(save: Int){
+            if(save!=-1){
+                d = save
+            }
             bewohner.add("Richard")
             bewohner.add("Magnus")
             bewohner.add("Wu")
@@ -26,6 +28,8 @@ class Board {
             bewohner.add("Louis")
             bewohner.add("Maik")
         }
+
+        fun name():String{return bewohner.get(d)}
 
         fun p_name(): String {
             d++
@@ -43,7 +47,7 @@ class Board {
             return bewohner.get(d)
         }
 
-        fun textcolor(table: Array<TextView>, text2: String){
+        fun textcolor(table: Array<TextView>, text2: String): Int{
             var save: Int = 0
             for (v in 0..5){
                 if(table[v].text==text2){
@@ -53,6 +57,7 @@ class Board {
                     table[v].setTextColor(Color.parseColor("#B1B1B1"))
                 }
             }
+            return save
         }
 
 

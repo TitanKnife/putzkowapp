@@ -108,8 +108,13 @@
         android:id="@+id/tableLayout"
         android:layout_width="317dp"
         android:layout_height="234dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="443dp"
+        android:layout_marginBottom="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
@@ -247,9 +252,10 @@
         android:id="@+id/imageView"
         android:layout_width="56dp"
         android:layout_height="45dp"
+        android:layout_marginStart="44dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.211"
+        app:layout_constraintEnd_toStartOf="@+id/app_title"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.205"
@@ -279,8 +285,10 @@
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="442dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="442dp" />
+        app:layout_constraintGuide_begin="442dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
@@ -300,7 +308,27 @@
         android:id="@+id/guideline9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="98dp"
+        android:layout_marginBottom="731dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="98dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_begin="98dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/id1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="54dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
