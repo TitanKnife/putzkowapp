@@ -1,12 +1,13 @@
 package com.example.putzkowapp
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Button
 import android.widget.TextView
+import com.example.putzkowapp.cycling.Cycle
+import com.example.putzkowapp.cycling.TextHandler
+import java.util.LinkedList
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,73 +15,112 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val intent = Intent(this, MainActivity2::class.java)
-//        startActivity(intent)
-//        finish()
+        var selectedPersonIndex = 0;
+        var weekIndex = 0
 
+        // UI Elements
+        val selectedPersonTextView = findViewById<TextView>(R.id.text_val2)
+        val weekIndexTextView = findViewById<TextView>(R.id.text_val)
+        val table = arrayOf<TextView>(
+            findViewById(R.id.table1),
+            findViewById(R.id.table2),
+            findViewById(R.id.table3),
+            findViewById(R.id.table4),
+            findViewById(R.id.table5),
+            findViewById(R.id.table6),
+        )
 
-        var i = 1
-        val text2 = findViewById<TextView>(R.id.text_val2)
-        val text = findViewById<TextView>(R.id.text_val)
-        val title = findViewById<TextView>(R.id.app_title)
-        val table = arrayOf<TextView>(findViewById<TextView>(R.id.table1), findViewById<TextView>(R.id.table2), findViewById<TextView>(R.id.table3), findViewById<TextView>(R.id.table4), findViewById<TextView>(R.id.table5), findViewById<TextView>(R.id.table6))
-        val id1 = findViewById<TextView>(R.id.id1)
-        //id1.text = getData().toString()
-        Board.init(getData())
-        text2.setText(Board.name())
-        Board2.init()
-        Board.refresh(table)
-        Board.textcolor(table, text2.text.toString())
+        // initialize people
+        val people = listOf("Magnus", "Richard", "Louise", "Maik", "Wu", "Vinod");
+
+        // initialize text Handlers
+        val textHandlers = LinkedList<TextHandler>();
+        people.forEachIndexed {
+                index, person -> textHandlers.add(TextHandler(table[index], person))
+        }
+
+        // initialize Cycle control, ignore Vinod
+        val mainCycle = Cycle(textHandlers, listOf("Vinod"));
+        val bathCycle = Cycle(textHandlers.subList(3,6));
+        fun moveCompleteCycle(direction: Int){
+            var dir = direction;
+            while (dir > 0){
+                mainCycle.moveCycle(1);
+                bathCycle.moveCycle(1);
+                dir--;
+            }
+            while (dir < 0){
+                bathCycle.moveCycle(-1);
+                mainCycle.moveCycle(-1);
+                dir++;
+            }
+        }
+
+        // restore currently selected user, and week
+        val restoredData = getData();
+        selectedPersonTextView.text = people[restoredData.getOrDefault("userid", 0)]
+        weekIndex = restoredData.getOrDefault("weekid", 0);
+        // write current week Index to textfield
+        weekIndexTextView.text = (weekIndex + 1).toString()
+        // apply week index
+        moveCompleteCycle(weekIndex);
+
+        // render method to execute after each click
+        fun render(){
+            // save data
+            saveData(selectedPersonIndex, weekIndex);
+
+            // change color
+            Board.textcolor(table, selectedPersonTextView.text.toString());
+        }
 
         val plus = findViewById<Button>(R.id.button_p)
         plus.setOnClickListener{
-            i++
-            if(i>5){
-                i=1
-            }
-            text.setText(i.toString())
-            Board2.switch()
-            Board.refresh(table)
-            saveData(Board.textcolor(table, text2.text.toString()))
+            weekIndex = ((weekIndex + 1 + 15) % 15);
+            weekIndexTextView.text = (weekIndex + 1).toString()
+            moveCompleteCycle(1);
+            render();
         }
 
         val minus = findViewById<Button>(R.id.button_m)
         minus.setOnClickListener{
-            i--
-            if(i<1){
-                i=5
-            }
-            text.setText(i.toString())
-            Board2.backswitch()
-            Board.refresh(table)
-            saveData(Board.textcolor(table, text2.text.toString()))
+            weekIndex = ((weekIndex - 1 + 15) % 15);
+            weekIndexTextView.text = (weekIndex + 1).toString()
+            moveCompleteCycle(-1);
+            render();
         }
 
-        val mname = findViewById<Button>(R.id.button_m2)
-        mname.setOnClickListener{
-            text2.setText(Board.m_name())
-            //saveData(Board.textcolor(table, text2.text.toString()))
+        val previousNameButton = findViewById<Button>(R.id.button_m2)
+        previousNameButton.setOnClickListener{
+            selectedPersonIndex = (selectedPersonIndex + people.count() - 1) % people.count();
+            selectedPersonTextView.text = people[selectedPersonIndex];
+            render();
         }
-        val pname = findViewById<Button>(R.id.button_p2)
-        pname.setOnClickListener{
-            text2.setText(Board.p_name())
-            //saveData(Board.textcolor(table, text2.text.toString()))
+        val nextNameButton = findViewById<Button>(R.id.button_p2)
+        nextNameButton.setOnClickListener{
+            selectedPersonIndex = (selectedPersonIndex + 1) % people.count();
+            selectedPersonTextView.text = people[selectedPersonIndex];
+            render();
         }
         val reset = findViewById<Button>(R.id.reset)
         reset.setOnClickListener{
             Board.reset()
             Board.refresh(table)
         }
+
+        // initial render
+        render()
     }
-    fun saveData(id:Int){
+    fun saveData(id:Int, weekId: Int){
        val sharedPreference =  getSharedPreferences("ID", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()
          editor.putInt("userid",id)
+         editor.putInt("weekid",weekId)
             editor.commit()
     }
 
-    fun getData(): Int{
+    fun getData(): Map<String, Int>{
         val sharedPreference =  getSharedPreferences("ID", Context.MODE_PRIVATE)
-        return sharedPreference.getInt("userid", -1)
+        return mapOf("userid" to sharedPreference.getInt("userid", -1), "weekid" to sharedPreference.getInt("weekid", -1));
     }
 }
