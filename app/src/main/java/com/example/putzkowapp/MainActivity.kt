@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         // initialize people
-        val people = listOf("Magnus", "Richard", "Louise", "Maik", "Wu", "Vinod");
+        val people = listOf("Magnus", "Richard", "Louis", "Maik", "Wu", "Vinod");
 
         // initialize text Handlers
         val textHandlers = LinkedList<TextHandler>();
@@ -40,17 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         // initialize Cycle control, ignore Vinod
-        val mainCycle = Cycle(textHandlers, listOf("Vinod"));
-        val bathCycle = Cycle(textHandlers.subList(3,6));
+        val mainCycle = Cycle(textHandlers);
         fun moveCompleteCycle(direction: Int){
             var dir = direction;
             while (dir > 0){
                 mainCycle.moveCycle(1);
-                bathCycle.moveCycle(1);
                 dir--;
             }
             while (dir < 0){
-                bathCycle.moveCycle(-1);
                 mainCycle.moveCycle(-1);
                 dir++;
             }
@@ -74,9 +71,10 @@ class MainActivity : AppCompatActivity() {
             Board.textcolor(table, selectedPersonTextView.text.toString());
         }
 
+        val differentDaysNumber = 6;
         val plus = findViewById<Button>(R.id.button_p)
         plus.setOnClickListener{
-            weekIndex = ((weekIndex + 1 + 15) % 15);
+            weekIndex = ((weekIndex + 1 + differentDaysNumber) % differentDaysNumber);
             weekIndexTextView.text = (weekIndex + 1).toString()
             moveCompleteCycle(1);
             render();
@@ -84,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         val minus = findViewById<Button>(R.id.button_m)
         minus.setOnClickListener{
-            weekIndex = ((weekIndex - 1 + 15) % 15);
+            weekIndex = ((weekIndex - 1 + differentDaysNumber) % differentDaysNumber);
             weekIndexTextView.text = (weekIndex + 1).toString()
             moveCompleteCycle(-1);
             render();
@@ -121,6 +119,6 @@ class MainActivity : AppCompatActivity() {
 
     fun getData(): Map<String, Int>{
         val sharedPreference =  getSharedPreferences("ID", Context.MODE_PRIVATE)
-        return mapOf("userid" to sharedPreference.getInt("userid", -1), "weekid" to sharedPreference.getInt("weekid", -1));
+        return mapOf("userid" to sharedPreference.getInt("userid", 0), "weekid" to sharedPreference.getInt("weekid", 0));
     }
 }
